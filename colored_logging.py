@@ -26,7 +26,7 @@ lcolor_profiles["default"] = {logging.CRITICAL: Back.BLACK + Fore.RED + Style.BR
 def level_to_style(level, lvl_to_color):
     """
     :param level: Level of the logging message.
-    :param lvl_to_color: Supply a dictionary that overrides the default coloring of the form level (int): formatting str
+    :param lvl_to_color: A dict defining coloring of each logging message. Format: {level (int): formatting str}.
     :return: Terminal control sequence as string.
     """
     for lvl in sorted(lvl_to_color.keys(), reverse=True):
@@ -37,6 +37,7 @@ def level_to_style(level, lvl_to_color):
 def return_colored_emit_fct(old_emit_fct, lvl_to_color=lcolor_profiles["default"]):
     """Returns an emit function/method that automatically adds coloring based ont the level of the logging message.
     :param old_emit_fct: Emit function or method (logging.StreamHandler.emit or logging.StreamHandler().emit)
+    :param lvl_to_color: A dict defining coloring of each logging message. Format: {level (int): formatting str}.
     :return: emit function/method that automatically adds coloring based on the level of the logging message.
     """
     def colored_emit_fct(*args):
@@ -53,9 +54,11 @@ def return_colored_emit_fct(old_emit_fct, lvl_to_color=lcolor_profiles["default"
             if isinstance(arg, logging.LogRecord):
                 break
         else:
-            # no break occurred / not found
-            print(args)
-            raise(ValueError, "At least one of the arguments has to be of type logging.LogRecord.")
+            # no break occurred / not found ==> abort
+            print("Got the following args:")
+            for arg in args:
+                print("Arg", arg, "of type", type(arg))
+            raise(ValueError, "At least one of them snould have been of type logging.LogRecord.")
         levelno = args[index].levelno
         color = level_to_style(levelno, lvl_to_color)
         args[index].msg = color + args[index].msg + reset_all
@@ -74,7 +77,7 @@ class ColoredStreamHandler(logging.StreamHandler):
 
 def demo_profile(color_profile, name=""):
     """Demonstrate a color profile by issuing logging messages on all defined levels.
-    :param color_profile: Level-to-color dictionary (e.g. {10: Style.DIM, logging.ERROR: Fore.RED}
+    :param color_profile: A dict defining coloring of each logging message. Format: {level (int): formatting str}.
     :param name: Name of the profile (if any). Will print heading, that's all.s
     :return:None
     """
