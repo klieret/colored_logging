@@ -21,6 +21,13 @@ lcolor_profiles["default"] = {logging.CRITICAL: Back.BLACK + Fore.RED + Style.BR
                               logging.WARNING:  Fore.RED + Style.BRIGHT,
                               logging.INFO:     "",
                               logging.DEBUG:    Style.DIM}
+lcolor_profiles["simple"] = {logging.CRITICAL: Fore.RED + Style.BRIGHT,
+                             logging.ERROR:    Fore.RED + Style.BRIGHT,
+                             logging.WARNING:  Fore.YELLOW + Style.BRIGHT,
+                             logging.INFO:     Fore.MAGENTA,
+                             logging.DEBUG:    Style.DIM}
+lcolor_profiles["dim"] = {0: Style.DIM}
+lcolor_profiles["black"] = {}
 
 
 def level_to_style(level, lvl_to_color):
@@ -32,6 +39,9 @@ def level_to_style(level, lvl_to_color):
     for lvl in sorted(lvl_to_color.keys(), reverse=True):
         if level >= lvl:
             return lvl_to_color[lvl]
+    else:
+        # no return occurred
+        return ""
 
 
 def return_colored_emit_fct(old_emit_fct, lvl_to_color=lcolor_profiles["default"]):
@@ -78,18 +88,32 @@ class ColoredStreamHandler(logging.StreamHandler):
 def demo_profile(color_profile, name=""):
     """Demonstrate a color profile by issuing logging messages on all defined levels.
     :param color_profile: A dict defining coloring of each logging message. Format: {level (int): formatting str}.
-    :param name: Name of the profile (if any). Will print heading, that's all.s
+    :param name: Name of the profile. If supplied, logging messages will be indented and there will be a heading.
     :return:None
     """
     if name:
-        print("*** Testing color profile '{}' ***".format(name))
-    lname = "test"
+        print("'{}' profile".format(name))
+        indent = 5
+    else:
+        indent = 0
+
+    formatter = logging.Formatter(" "*indent + '%(asctime)s - %(levelname)s - %(message)s')
+
+    sh = ColoredStreamHandler(lvl_to_color=color_profile)
+    sh.setFormatter(formatter)
+
+    # unique name (else logging.getLogger will return the same logger every time)
+    lname = str(id(color_profile))
+
     logger = logging.getLogger(lname)
     logger.setLevel(logging.DEBUG)
-    sh = ColoredStreamHandler(lvl_to_color=color_profile)
     logger.addHandler(sh)
 
-    for lvl in sorted(color_profile.keys()):
+    # make sure to test both the standard levels and if nescessary user defined levels.
+    standard_levels = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+    test_levels = set(list((color_profile.keys())) + standard_levels)  # (set: make sure to not have duplicates)
+
+    for lvl in sorted(test_levels, reverse=True):
         record = logging.LogRecord(name=lname, level=lvl, pathname=__file__, lineno=86,
                                    msg="Logging message of level {} ({})".format(lvl, logging.getLevelName(lvl)),
                                    args={}, exc_info=None)
@@ -97,5 +121,6 @@ def demo_profile(color_profile, name=""):
 
 
 if __name__ == "__main__":
+    print("*** TESTING LOG COLOR PROFILES ***")
     for profile_name in lcolor_profiles:
         demo_profile(lcolor_profiles[profile_name], profile_name)
