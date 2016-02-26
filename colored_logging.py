@@ -6,30 +6,56 @@ import colorama
 colorama.init()
 
 
-def level_to_style(level, lcolor=None):
+def convertable_to_int(inpt):
+    """
+    :param inpt: Anything.
+    :return:Int if ``inpt`` can be interpreted as such.
+    """
+    try:
+        int(inpt)
+    except ValueError:
+        return False
+    else:
+        return True
+
+
+def level_to_style(level, misc_to_color=None, name_to_lvl=None):
     """
     :param level: Level of the logging message.
-    :param lcolor: Supply a dictionary that overrides the default coloring. See code for details.
+    :param misc_to_color: Supply a dictionary that overrides the default coloring. Keys should either be the level
+    numbers, or the strings "critical", "error", "warning", "info" and "debug".
     :return: Terminal control sequence as string.
     """
     # default level number to level name conversion
-    lthresh = {50: "critical",
-               40: "error",
-               30: "warning",
-               20: "info",
-               10: "debug"}
+    if not name_to_lvl:
+        name_to_lvl = {"critical": 50,
+                       "error": 40,
+                       "warning": 30,
+                       "info": 20,
+                       "debug": 10, }
 
     # level to color
-    if not lcolor:
-        lcolor = {"critical": colorama.Back.BLACK + colorama.Fore.RED + colorama.Style.BRIGHT,
-                  "error":    colorama.Back.BLACK + colorama.Fore.WHITE + colorama.Style.BRIGHT,
-                  "warning":  colorama.Fore.RED + colorama.Style.BRIGHT,
-                  "info":     "",
-                  "debug":    colorama.Style.DIM}
+    if not misc_to_color:
+        # default
+        # either use the keys from $name_to_lvl or just use the level numbers
+        misc_to_color = {"critical": colorama.Back.BLACK + colorama.Fore.RED + colorama.Style.BRIGHT,
+                         "error":    colorama.Back.BLACK + colorama.Fore.WHITE + colorama.Style.BRIGHT,
+                         "warning":  colorama.Fore.RED + colorama.Style.BRIGHT,
+                         "info":     "",
+                         "debug":    colorama.Style.DIM}
 
-    for lvl in sorted(lthresh.keys(), reverse=True):
+    lvl_to_color = {}
+    for key in misc_to_color:
+        if convertable_to_int(key):
+            lvl_to_color[int(key)] = misc_to_color[key]
+        elif key in name_to_lvl:
+            lvl_to_color[name_to_lvl[key]] = misc_to_color[key]
+        else:
+            raise ValueError
+
+    for lvl in sorted(lvl_to_color.keys(), reverse=True):
         if level >= lvl:
-            return lcolor[lthresh[lvl]]
+            return lvl_to_color[lvl]
 
 
 def return_colored_emit_fct(old_emit_fct):
