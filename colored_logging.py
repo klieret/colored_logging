@@ -6,9 +6,9 @@ import logging
 # holding different stylings for logs
 lcolor_profiles = dict()
 
-# Default style.
-# feel free to use another module to generate the formatting sequences
-# (or just enter them manually).
+# Below is the default style.
+# feel free to change the formating or use another module to generate the formatting sequences
+# (you can of course just enter them manually).
 
 import colorama
 from colorama import Fore, Back, Style
@@ -72,16 +72,27 @@ class ColoredStreamHandler(logging.StreamHandler):
         return_colored_emit_fct(logging.StreamHandler.emit, self.lvl_to_color)(self, *args, **kwargs)
 
 
-if __name__ == "__main__":
-    logger = logging.getLogger("ColoringTest")
+def demo_profile(color_profile, name=""):
+    """Demonstrate a color profile by issuing logging messages on all defined levels.
+    :param color_profile: Level-to-color dictionary (e.g. {10: Style.DIM, logging.ERROR: Fore.RED}
+    :param name: Name of the profile (if any). Will print heading, that's all.s
+    :return:None
+    """
+    if name:
+        print("*** Testing color profile '{}' ***".format(name))
+    lname = "test"
+    logger = logging.getLogger(lname)
     logger.setLevel(logging.DEBUG)
-    sh = ColoredStreamHandler()
+    sh = ColoredStreamHandler(lvl_to_color=color_profile)
     logger.addHandler(sh)
-    print("Testing logging color settings.")
-    print("-"*50)
-    logger.debug("This is a debug message.")
-    logger.info("This is an info message.")
-    logger.warning("This is a warning message.")
-    logger.error("This is an error message.")
-    logger.critical("This is a critical error message.")
-    print("-"*50)
+
+    for lvl in sorted(color_profile.keys()):
+        record = logging.LogRecord(name=lname, level=lvl, pathname=__file__, lineno=86,
+                                   msg="Logging message of level {} ({})".format(lvl, logging.getLevelName(lvl)),
+                                   args={}, exc_info=None)
+        logger.handle(record)
+
+
+if __name__ == "__main__":
+    for profile_name in lcolor_profiles:
+        demo_profile(lcolor_profiles[profile_name], profile_name)
