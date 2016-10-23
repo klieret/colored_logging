@@ -30,9 +30,9 @@ demo_lcolor_profiles["default"] = {
 demo_lcolor_profiles["simple"] = {
     logging.CRITICAL: Fore.RED + Style.BRIGHT,
     logging.ERROR:    Fore.RED + Style.BRIGHT,
-    logging.WARNING:  Fore.YELLOW + Style.BRIGHT,
-    logging.INFO:     Fore.MAGENTA,
-    logging.DEBUG:    Style.DIM,
+    logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
+    logging.INFO:     Fore.GREEN + Style.BRIGHT,
+    logging.DEBUG:    Fore.GREEN,
     0:                Style.RESET_ALL}
 
 demo_lcolor_profiles["dim"] = {1: Style.DIM,
