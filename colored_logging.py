@@ -99,9 +99,10 @@ class ColoredStreamHandler(logging.StreamHandler):
     def __init__(self, lvl_to_color=lcolor_profiles["default"], *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lvl_to_color = lvl_to_color
+        self.emit_fct = return_colored_emit_fct(logging.StreamHandler.emit, self.lvl_to_color)
 
     def emit(self, *args, **kwargs):
-        return_colored_emit_fct(logging.StreamHandler.emit, self.lvl_to_color)(self, *args, **kwargs)
+        self.emit_fct(self, *args, **kwargs)
 
 
 def demo_profile(color_profile, name=""):
