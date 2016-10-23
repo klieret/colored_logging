@@ -8,7 +8,7 @@ For use together with the python3 logging module: Allows to automatically color 
 
 Minimal example, using one of the predefined color schemes from ```demo_profiles.py```:
 
-```pyhon
+```python
 import logging
 from colored_logging import ColoredStreamHandler
 
@@ -48,4 +48,4 @@ sh = ColoredStreamHandler(my_profile)
 (...)
 ```
 
-** Note: Always define a reset sequence that resets the color/formatting to the default value at level 0! **
+**Note: Always define a reset sequence that resets the color/formatting to the default value at level 0!**
