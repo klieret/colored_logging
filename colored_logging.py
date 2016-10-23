@@ -5,41 +5,7 @@
 logging level. """
 
 import logging
-import colorama
-from colorama import Fore, Back, Style
 from typing import Dict
-colorama.init()
-
-# to provide cross-platform terminal colors, this module uses the colorama
-# module. See https://pypi.python.org/pypi/colorama (e.g. install via
-# sudo pip3 colorama)
-
-# after emitting the logging messages, restore default:
-reset_all = Style.RESET_ALL
-
-# Below are a few default color profiles.
-# feel free to change the formating or use another module to generate the
-# formatting sequences (or just enter them manually).
-
-demo_lcolor_profiles = {}
-
-demo_lcolor_profiles["default"] = {
-    logging.CRITICAL: Back.BLACK + Fore.RED + Style.BRIGHT,
-    logging.ERROR:    Back.BLACK + Fore.WHITE + Style.BRIGHT,
-    logging.WARNING:  Fore.RED + Style.BRIGHT,
-    logging.INFO:     "",
-    logging.DEBUG:    Style.DIM}
-
-demo_lcolor_profiles["simple"] = {
-    logging.CRITICAL: Fore.RED + Style.BRIGHT,
-    logging.ERROR:    Fore.RED + Style.BRIGHT,
-    logging.WARNING:  Fore.YELLOW + Style.BRIGHT,
-    logging.INFO:     Fore.MAGENTA,
-    logging.DEBUG:    Style.DIM}
-
-demo_lcolor_profiles["dim"] = {0: Style.DIM}
-
-demo_lcolor_profiles["black"] = {}
 
 
 def level_to_style(level: int, lcolor_profile: Dict[int, str]) -> str:
@@ -57,14 +23,14 @@ def level_to_style(level: int, lcolor_profile: Dict[int, str]) -> str:
 
 
 def return_colored_emit_fct(old_emit_fct,
-                            lvl_to_color=demo_lcolor_profiles["default"]):
+                            color_dict=Dict[int, str]):
     """Returns an emit function/method that automatically adds coloring based
     on the logging level.
     :param old_emit_fct: Original Emit function or method:
                          logging.StreamHandler.emit or
                          logging.StreamHandler().emit)
-    :param lvl_to_color: A dict defining coloring of each logging message.
-                         Format: {level (int): formatting str}.
+    :param color_dict: A dict defining coloring of each logging message.
+                       Format: {level (int): formatting str}.
     :return: emit function/method that adds coloring based on the
              logging level"""
     def colored_emit_fct(*args):
@@ -97,27 +63,32 @@ def return_colored_emit_fct(old_emit_fct,
                              "logging.LogRecord.")
             raise(ValueError, '\n'.join(abort_msg))
         levelno = args[index].levelno
-        color = level_to_style(levelno, lvl_to_color)
-        args[index].msg = color + args[index].msg + reset_all
+        color = level_to_style(levelno, color_dict)
+        args[index].msg = color + args[index].msg + color_dict[0]
         return old_emit_fct(*args)
     return colored_emit_fct
 
 
 class ColoredStreamHandler(logging.StreamHandler):
-    def __init__(self, lvl_to_color=demo_lcolor_profiles["default"], *args,
+    """Use instead of logging.StreamHandler to color the logging messages."""
+    def __init__(self, color_dict: Dict[int, str], *args,
                  **kwargs):
+        """
+        :param color_dict: A dict defining coloring of each logging message.
+                           Format: {level (int): formatting str}.
+        """
         super().__init__(*args, **kwargs)
         self.emit_fct = return_colored_emit_fct(logging.StreamHandler.emit,
-                                                lvl_to_color)
+                                                color_dict)
 
     def emit(self, *args, **kwargs):
         self.emit_fct(self, *args, **kwargs)
 
 
-def demo_profile(color_profile, name=""):
+def preview_coloring(color_dict, name=""):
     """Preview a color profile by issuing logging messages on all defined
     levels.
-    :param color_profile: A dict defining coloring of each logging message.
+    :param color_dict: A dict defining coloring of each logging message.
                           Format: {level (int): formatting str}.
     :param name: Name of the profile. If supplied, logging messages will be
                  indented and there will be a heading.
@@ -132,12 +103,12 @@ def demo_profile(color_profile, name=""):
     formatter = logging.Formatter(indent + '%(asctime)s - %(levelname)s -'
                                            ' %(message)s')
 
-    sh = ColoredStreamHandler(lvl_to_color=color_profile)
+    sh = ColoredStreamHandler(color_dict=color_dict)
     sh.setFormatter(formatter)
 
     # unique name (else logging.getLogger will return the same logger every
     # time)
-    lname = str(id(color_profile))
+    lname = str(id(color_dict))
 
     logger = logging.getLogger(lname)
     logger.setLevel(logging.DEBUG)
@@ -147,7 +118,7 @@ def demo_profile(color_profile, name=""):
     standard_levels = [logging.DEBUG, logging.INFO, logging.WARNING,
                        logging.ERROR, logging.CRITICAL]
     # make sure to not have duplicates
-    all_levels = set(list((color_profile.keys())) + standard_levels)
+    all_levels = set(list((color_dict.keys())) + standard_levels)
 
     for lvl in sorted(all_levels, reverse=True):
         msg = "Logging message of level {}".format(lvl)
@@ -159,9 +130,3 @@ def demo_profile(color_profile, name=""):
                                    args={},
                                    exc_info=None)
         logger.handle(record)
-
-
-if __name__ == "__main__":
-    print("*** TESTING COLOR PROFILES ***")
-    for profile_name in demo_lcolor_profiles:
-        demo_profile(demo_lcolor_profiles[profile_name], profile_name)
