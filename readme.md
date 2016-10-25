@@ -40,7 +40,7 @@ my_profile = {
     logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
     logging.INFO:     Fore.GREEN + Style.BRIGHT,
     logging.DEBUG:    Fore.GREEN,
-    0:                Style.RESET_ALL
+    "reset":          Style.RESET_ALL
 }
 
 sh = ColoredStreamHandler(my_profile)
@@ -48,4 +48,4 @@ sh = ColoredStreamHandler(my_profile)
 (...)
 ```
 
-**Note: Always define a reset sequence that resets the color/formatting to the default value at level 0!**
+**Note: Always define a reset sequence (to the key "reset") that resets the color/formatting to the default value**

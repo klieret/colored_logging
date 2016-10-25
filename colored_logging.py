@@ -64,7 +64,7 @@ def return_colored_emit_fct(old_emit_fct,
             raise(ValueError, '\n'.join(abort_msg))
         levelno = args[index].levelno
         color = level_to_style(levelno, color_dict)
-        args[index].msg = color + args[index].msg + color_dict[0]
+        args[index].msg = color + args[index].msg + color_dict["reset"]
         return old_emit_fct(*args)
     return colored_emit_fct
 

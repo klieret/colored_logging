@@ -25,7 +25,7 @@ demo_lcolor_profiles["default"] = {
     logging.WARNING:  Fore.RED + Style.BRIGHT,
     logging.INFO:     "",
     logging.DEBUG:    Style.DIM,
-    0:                Style.RESET_ALL}
+    "reset":          Style.RESET_ALL}
 
 demo_lcolor_profiles["simple"] = {
     logging.CRITICAL: Fore.RED + Style.BRIGHT,
@@ -33,12 +33,12 @@ demo_lcolor_profiles["simple"] = {
     logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
     logging.INFO:     Fore.GREEN + Style.BRIGHT,
     logging.DEBUG:    Fore.GREEN,
-    0:                Style.RESET_ALL}
+    "reset":          Style.RESET_ALL}
 
 demo_lcolor_profiles["dim"] = {1: Style.DIM,
-                               0: Style.RESET_ALL}
+                               "reset": Style.RESET_ALL}
 
-demo_lcolor_profiles["black"] = {0: Style.RESET_ALL}
+demo_lcolor_profiles["black"] = {"reset": Style.RESET_ALL}
 
 
 if __name__ == "__main__":
