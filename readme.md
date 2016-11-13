@@ -1,5 +1,7 @@
 # Color for the python3 logging module
 
+[![Build Status](https://travis-ci.org/klieret/python-colorlog.svg?branch=master)](https://travis-ci.org/klieret/python-colorlog)
+
 For use together with the python3 logging module: Allows to automatically color logging messages based on their level.
 
 ![screenshot](https://cloud.githubusercontent.com/assets/13602468/20245019/fa888894-a996-11e6-8ad4-d3862d515d08.png)
