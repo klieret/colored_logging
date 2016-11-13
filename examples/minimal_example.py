@@ -14,4 +14,4 @@ logger.setLevel(logging.DEBUG)
 sh = ColoredStreamHandler(demo_lcolor_profiles['default'])
 logger.addHandler(sh)
 
-logger.error("Some info message.")
+logger.error("Some error message.")

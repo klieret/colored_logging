@@ -21,7 +21,7 @@ logger.setLevel(logging.DEBUG)
 sh = ColoredStreamHandler(demo_lcolor_profiles['default'])
 logger.addHandler(sh)
 
-logger.error("Some info message.")
+logger.error("Some error message.")
 ```
 
 Color profiles are ```int:str``` dictionaries that map level numbers to formatting strings. To do this platform independent, it is recommended to use some module like ```colorama```:
@@ -40,7 +40,7 @@ my_profile = {
     logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
     logging.INFO:     Fore.GREEN + Style.BRIGHT,
     logging.DEBUG:    Fore.GREEN,
-    "reset":          Style.RESET_ALL
+    -1:          Style.RESET_ALL
 }
 
 sh = ColoredStreamHandler(my_profile)
@@ -48,4 +48,4 @@ sh = ColoredStreamHandler(my_profile)
 (...)
 ```
 
-**Note: Always define a reset sequence (to the key "reset") that resets the color/formatting to the default value**
+**Note: Always define a reset sequence (to the key -1) that resets the color/formatting to the default value**
