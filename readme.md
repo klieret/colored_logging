@@ -2,7 +2,17 @@
 
 For use together with the python3 logging module: Allows to automatically color logging messages based on their level.
 
-![colored logging](scrot.png)
+![screenshot](https://cloud.githubusercontent.com/assets/13602468/20245019/fa888894-a996-11e6-8ad4-d3862d515d08.png)
+
+## Install
+
+As this project is still in development, you have to clone the repository first and then install it with ```pip```:
+
+```sh
+git clone https://github.com/klieret/python-colorlog
+cd python-colorlog
+pip3 install .
+```
 
 ## Usage
 
