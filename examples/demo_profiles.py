@@ -6,7 +6,7 @@
 import logging
 import colorama
 from colorama import Fore, Back, Style
-from colored_logging import preview_coloring
+from colorlog import preview_coloring
 colorama.init()
 
 # to provide cross-platform terminal colors, this module uses the colorama

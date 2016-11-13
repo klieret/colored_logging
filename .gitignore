@@ -1,3 +1,4 @@
 readme_files/screenshots
 .idea/**
-__pycache__/*
+examples/__pycache__/*
+colorlog/__pycache__/*

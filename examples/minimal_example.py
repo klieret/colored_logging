@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import logging
-from colored_logging import ColoredStreamHandler
 
 # Some demo color profile
 from demo_profiles import demo_lcolor_profiles
+
+from colorlog import ColoredStreamHandler
+
 
 logger = logging.getLogger("logger")
 logger.setLevel(logging.DEBUG)
