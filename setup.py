@@ -11,7 +11,7 @@ setup(name='colorlog',
       author_email='klieret@users.noreply.github.com',
       url='https://github.com/klieret/python-colorlog',
       packages=['colorlog'],
-      install_requires=[],)
+      install_requires=['typing'],)
 
 
 
