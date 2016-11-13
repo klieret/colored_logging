@@ -17,6 +17,8 @@ colorama.init()
 # feel free to change the formating or use another module to generate the
 # formatting sequences (or just enter them manually).
 
+# color_dict[-1] holds the reset sequence
+
 demo_lcolor_profiles = {}
 
 demo_lcolor_profiles["default"] = {
@@ -25,7 +27,7 @@ demo_lcolor_profiles["default"] = {
     logging.WARNING:  Fore.RED + Style.BRIGHT,
     logging.INFO:     "",
     logging.DEBUG:    Style.DIM,
-    "reset":          Style.RESET_ALL}
+    -1:          Style.RESET_ALL}
 
 demo_lcolor_profiles["simple"] = {
     logging.CRITICAL: Fore.RED + Style.BRIGHT,
@@ -33,12 +35,12 @@ demo_lcolor_profiles["simple"] = {
     logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
     logging.INFO:     Fore.GREEN + Style.BRIGHT,
     logging.DEBUG:    Fore.GREEN,
-    "reset":          Style.RESET_ALL}
+    -1:          Style.RESET_ALL}
 
 demo_lcolor_profiles["dim"] = {1: Style.DIM,
-                               "reset": Style.RESET_ALL}
+                               -1: Style.RESET_ALL}
 
-demo_lcolor_profiles["black"] = {"reset": Style.RESET_ALL}
+demo_lcolor_profiles["black"] = {-1: Style.RESET_ALL}
 
 
 if __name__ == "__main__":
