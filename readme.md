@@ -6,7 +6,7 @@ For use together with the python3 logging module: Allows to automatically color 
 
 ![screenshot](https://cloud.githubusercontent.com/assets/13602468/20245019/fa888894-a996-11e6-8ad4-d3862d515d08.png)
 
-## Install
+## Installation
 
 As this project is still in development, you have to clone the repository first and then install it with ```pip```:
 
@@ -52,7 +52,7 @@ my_profile = {
     logging.WARNING:  Fore.MAGENTA + Style.BRIGHT,
     logging.INFO:     Fore.GREEN + Style.BRIGHT,
     logging.DEBUG:    Fore.GREEN,
-    -1:          Style.RESET_ALL
+    -1:               Style.RESET_ALL
 }
 
 sh = ColoredStreamHandler(my_profile)
@@ -61,3 +61,7 @@ sh = ColoredStreamHandler(my_profile)
 ```
 
 **Note: Always define a reset sequence (to the key -1) that resets the color/formatting to the default value**
+
+## License
+
+The contents of this repository are licensed under the *GNU Lesser General Public License v3.0*. 
