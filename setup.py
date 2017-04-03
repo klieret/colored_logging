@@ -5,12 +5,16 @@ try:
 except ImportError:
     from distutils.core import setup
 
+with open('readme.rst') as file:
+    long_description = file.read()
+
 setup(name='colorlog',
       description='Color for the python3 logging module',
+      long_description = long_description,
       author='klieret',
       author_email='klieret@users.noreply.github.com',
       maintainer='klieret',
-      maintainer_email'klieret@users.noreply.github.com',
+      maintainer_email='klieret@users.noreply.github.com',
       url='https://github.com/klieret/python-colorlog',
       packages=['colorlog'],
       install_requires=['typing'],
