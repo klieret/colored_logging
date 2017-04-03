@@ -2,3 +2,5 @@ readme_files/screenshots
 .idea/**
 examples/__pycache__/*
 colorlog/__pycache__/*
+MANIFEST
+dist/**
