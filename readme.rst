@@ -6,7 +6,7 @@ Color for the python3 logging module
 For use together with the python3 logging module: Allows to
 automatically color logging messages based on their level.
 
-.. figure:: https://cloud.githubusercontent.com/assets/13602468/20245019/fa888894-a996-11e6-8ad4-d3862d515d08.png
+.. figure:: https://cloud.githubusercontent.com/assets/13602468/24600851/cf941cdc-1856-11e7-97da-b8cd18568577.png 
    :alt: screenshot
 
    screenshot
