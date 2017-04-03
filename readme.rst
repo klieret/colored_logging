@@ -1,5 +1,6 @@
 Color for the python3 logging module
 ====================================
+**JUST FOUND OUT THAT THERE's AN OLDER PACKAGE, WHICH IS ALSO BETTER**: Check out `colorlog  <https://github.com/borntyping/python-colorlog>`_ from bornyping.
 
 |Build Status|
 
